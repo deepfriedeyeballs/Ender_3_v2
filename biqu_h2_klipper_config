@@ -207,6 +207,15 @@ unretract_speed: 5
 
 [gcode_macro START_PRINT]
 
+#  Cura start gcode:
+#
+#  START_PRINT BED={material_bed_temperature_layer_0} HOTEND={material_print_temperature_layer_0}
+#
+
+; M190 S{material_bed_temperature_layer_0} M109 S{material_print_temperature_layer_0}
+
+
+
 gcode:        
     # Parameters
     {% set bedtemp = params.BED|int %}
