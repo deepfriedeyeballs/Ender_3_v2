@@ -1,0 +1,469 @@
+
+# This file contains pin mappings for the stock 2020 Creality Ender 3
+# V2. To use this config, during "make menuconfig" select the
+# STM32F103 with a "28KiB bootloader" and serial (on USART1 PA10/PA9)
+# communication.
+
+# If you prefer a direct serial connection, in "make menuconfig"
+# select "Enable extra low-level configuration options" and select
+# serial (on USART3 PB11/PB10), which is broken out on the 10 pin IDC
+# cable used for the LCD module as follows:
+# 3: Tx, 4: Rx, 9: GND, 10: VCC
+
+# Flash this firmware by copying "out/klipper.bin" to a SD card and
+# turning on the printer with the card inserted. The firmware
+# filename must end in ".bin" and must not match the last filename
+# that was flashed.
+
+# See docs/Config_Reference.md for a description of parameters.
+
+[virtual_sdcard]
+path: ~/gcode_files
+
+[display_status]
+
+[pause_resume]
+
+[stepper_x]
+step_pin: PC2
+dir_pin: PB9
+enable_pin: !PC3
+microsteps: 16
+rotation_distance: 40
+endstop_pin: ^PA5
+position_endstop: 0
+position_max: 235
+homing_speed: 50
+
+[stepper_y]
+step_pin: PB8
+dir_pin: PB7
+enable_pin: !PC3
+microsteps: 16
+rotation_distance: 40
+endstop_pin: ^PA6
+position_endstop: 0
+position_max: 230
+homing_speed: 50
+
+[stepper_z]
+step_pin: PB6
+dir_pin: !PB5
+enable_pin: !PC3
+microsteps: 16
+rotation_distance: 8
+endstop_pin: ^PA7
+#position_endstop: 0.0
+position_min: -2
+position_max: 250
+
+[extruder]
+max_extrude_only_distance: 100.0
+step_pin: PB4
+dir_pin: !PB3
+enable_pin: !PC3
+microsteps: 16
+rotation_distance: 3.4362 #Stock - 3.4335
+nozzle_diameter: 0.400
+filament_diameter: 1.750
+heater_pin: PA1
+sensor_type: ATC Semitec 104NT-4-R025H42G
+sensor_pin: PC5
+#control: pid
+# tuned for stock hardware with 200 degree Celsius target
+#pid_Kp: 21.527
+#pid_Ki: 1.063
+#pid_Kd: 108.982
+min_temp: 0
+max_temp: 350
+pressure_advance = 0.045
+
+[thermistor ATC Semitec 104NT-4-R025H42G]
+temperature1: 25
+resistance1: 100000
+temperature2: 160
+resistance2: 1074
+temperature3: 300
+resistance3: 82.78
+
+
+#[tmc2208 stepper_z]
+#uart_pin:
+#   The pin connected to the TMC2208 PDN_UART line. This parameter
+#   must be provided.
+#tx_pin:
+#   If using separate receive and transmit lines to communicate with
+#   the driver then set uart_pin to the receive pin and tx_pin to the
+#   transmit pin. The default is to use uart_pin for both reading and
+#   writing.
+#select_pins:
+#   A comma separated list of pins to set prior to accessing the
+#   tmc2208 UART. This may be useful for configuring an analog mux for
+#   UART communication. The default is to not configure any pins.
+#interpolate: True
+#   If true, enable step interpolation (the driver will internally
+#   step at a rate of 256 micro-steps). This interpolation does
+#   introduce a small systemic positional deviation - see
+#   TMC_Drivers.md for details. The default is True.
+#run_current:
+#   The amount of current (in amps RMS) to configure the driver to use
+#   during stepper movement. This parameter must be provided.
+#hold_current:
+#   The amount of current (in amps RMS) to configure the driver to use
+#   when the stepper is not moving. Setting a hold_current is not
+#   recommended (see TMC_Drivers.md for details). The default is to
+#   not reduce the current.
+#sense_resistor: 0.110
+#   The resistance (in ohms) of the motor sense resistor. The default
+#   is 0.110 ohms.
+#stealthchop_threshold: 0
+#   The velocity (in mm/s) to set the "stealthChop" threshold to. When
+#   set, "stealthChop" mode will be enabled if the stepper motor
+#   velocity is below this value. The default is 0, which disables
+#   "stealthChop" mode.
+#driver_IHOLDDELAY: 8
+#driver_TPOWERDOWN: 20
+#driver_TBL: 2
+#driver_TOFF: 3
+#driver_HEND: 0
+#driver_HSTRT: 5
+#driver_PWM_AUTOGRAD: True
+#driver_PWM_AUTOSCALE: True
+#driver_PWM_LIM: 12
+#driver_PWM_REG: 8
+#driver_PWM_FREQ: 1
+#driver_PWM_GRAD: 14
+#driver_PWM_OFS: 36
+#   Set the given register during the configuration of the TMC2208
+#   chip. This may be used to set custom motor parameters. The
+#   defaults for each parameter are next to the parameter name in the
+#   above list.
+
+[heater_bed]
+heater_pin: PA2
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: PC4
+control: pid
+# tuned for stock hardware with 50 degree Celsius target
+pid_Kp: 54.027
+pid_Ki: 0.770
+pid_Kd: 948.182
+min_temp: 0
+max_temp: 130
+
+[fan]
+pin: PA0
+
+[mcu]
+serial: /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
+restart_method: command
+
+[printer]
+kinematics: cartesian
+max_velocity: 300
+max_accel: 3000
+max_z_velocity: 5
+max_z_accel: 100
+
+[bed_screws]
+screw1: 37, 22
+screw2: 205, 22
+screw3: 205, 192
+screw4: 37, 192
+
+[input_shaper]
+shaper_freq_x: 43.27
+shaper_freq_y: 44.37
+shaper_type: ei
+
+[bed_mesh]
+speed: 120
+horizontal_move_z: 5
+mesh_min: 20, 7
+mesh_max: 225, 212
+probe_count: 5, 5
+mesh_pps: 2, 2
+algorithm: bicubic 
+bicubic_tension: 0.2
+fade_start: 1
+fade_end: 10
+fade_target: 0
+
+[endstop_phase]
+
+[firmware_retraction]
+retract_length: .75
+#   The length of filament (in mm) to retract when G10 is activated,
+#   and to unretract when G11 is activated (but see
+#   unretract_extra_length below). The default is 0 mm.
+retract_speed: 5
+#   The speed of retraction, in mm/s. The default is 20 mm/s.
+unretract_extra_length: 0.0
+#   The length (in mm) of *additional* filament to add when
+#   unretracting.
+unretract_speed: 5
+#   The speed of unretraction, in mm/s. The default is 10 mm/s.
+
+
+[gcode_macro START_PRINT]
+
+gcode:        
+    # Parameters
+    {% set bedtemp = params.BED|int %}
+    {% set hotendtemp = params.HOTEND|int %}
+    #{% set chambertemp = params.CHAMBER|default(0)|int %}
+
+    G92 E0 ; Reset Extruder
+    G28
+    G90
+    # <insert your routines here>
+    G1 Z5.0     # Move nozzle up a bit to heat
+    M104 S{hotendtemp}    # Start Nozzle Heating
+    M190 S{bedtemp}                                                              ; set & wait for bed temp
+    #TEMPERATURE_WAIT SENSOR="temperature_sensor chamber" MINIMUM={chambertemp}   ; wait for chamber temp
+    # <insert your routines here>
+    M109 S{hotendtemp}                                                           ; set & wait for hotend temp
+    # <insert your routines here>
+    #G28 Z                                                                        ; final z homing
+    G90                                                                          ; absolute positioning
+
+# XXXXXXXXXXXX
+
+    # Set BIQU H2 offset
+    G1 X10 Y0 Z10
+    G92 X0 Y0 Z10
+    # Move the nozzle near the bed
+    G1 Z5 F3000
+    # Move the nozzle very close to the bed
+    G1 Z0.3 F300
+    # Wait for bed to reach temperature
+    # M190 S{BED_TEMP}
+    # Set and wait for nozzle to reach temperature
+    # M109 S{EXTRUDER_TEMP}
+    G92 E0 ; Reset Extruder
+    BED_MESH_PROFILE LOAD=wiggly1
+    G1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position
+    G1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line
+    G1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little
+    G1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line
+    G92 E0 ; Reset Extruder
+    G1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed
+    G1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish
+
+
+
+; Ender 3 Custom Start G-code
+#G92 E0 ; Reset Extruder
+#G28 ; Home all axes
+#G1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed
+#G1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position
+#G1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line
+#G1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little
+#G1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line
+#G92 E0 ; Reset Extruder
+#G1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed
+#G1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish
+
+
+[gcode_macro END_PRINT]
+gcode:
+    G91 ;Relative positioning
+    G1 E-2 F2700 ;Retract a bit
+    G1 E-2 Z0.2 F2400 ;Retract and raise Z
+    G1 X5 Y5 F3000 ;Wipe out
+    G1 Z10 ;Raise Z more
+    G90 ;Absolute positioning
+
+    G1 X0 Y200 ;Present print
+    M106 S0 ;Turn-off fan
+    M104 S0 ;Turn-off hotend
+    M140 S0 ;Turn-off bed
+
+    M84 ;Disable all steppers
+
+[gcode_macro CANCEL_PRINT]
+description: Cancel the actual running print
+rename_existing: CANCEL_PRINT_BASE
+gcode:
+
+  G91 ;Relative positioning
+  G1 E-2 F2700 ;Retract a bit
+  G1 E-2 Z0.2 F2400 ;Retract and raise Z
+  G1 X5 Y5 F3000 ;Wipe out
+  G1 Z20 ;Raise Z more
+  #G90 ;Absolute positioning
+
+  #G1 X0 Y200 ;Present print
+  M106 S0 ;Turn-off fan
+  M104 S0 ;Turn-off hotend
+  M140 S0 ;Turn-off bed
+  M84 ;Disable all steppers
+
+    #G91
+    #G1 Z20
+    #TURN_OFF_HEATERS
+  CANCEL_PRINT_BASE
+
+
+[gcode_macro PAUSE]
+rename_existing: BASE_PAUSE
+gcode:
+    ##### set defaults #####
+    {% set x = params.X|default(10) %}      #edit to your park position
+    {% set y = params.Y|default(200) %}      #edit to your park position
+    {% set z = params.Z|default(10)|float %} #edit to your park position
+    {% set e = params.E|default(1) %}        #edit to your retract length
+    ##### calculate save lift position #####
+    {% set max_z = printer.toolhead.axis_maximum.z|float %}
+    {% set act_z = printer.toolhead.position.z|float %}
+    {% set lift_z = z|abs %}
+    {% if act_z < (max_z - lift_z) %}
+        {% set z_safe = lift_z %}
+    {% else %}
+        {% set z_safe = max_z - act_z %}
+    {% endif %}
+    ##### end of definitions #####
+    SAVE_GCODE_STATE NAME=PAUSE_state
+    BASE_PAUSE
+    G91
+    G1 E-{e} F2100
+    G1 Z{z_safe}
+    G90
+    G1 X{x} Y{y} F6000
+
+
+[gcode_macro RESUME]
+rename_existing: BASE_RESUME
+gcode:
+    ##### set defaults #####
+    {% set e = params.E|default(1) %} #edit to your retract length
+    G91
+    G1 E{e} F2100
+    G1 E0.025
+    G90
+    M106 S56
+    M221 S102
+    M220 S50
+    RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
+    BASE_RESUME
+
+[gcode_macro PA_CAL]
+# Klipper pressure advance line calibration macro.
+# Usage: PA_CAL BED=100 NOZZLE=240 PA_START=0.0 PA_STOP=0.1 NZL=0.4
+# Or you can execute with no parameters, which will use values from printer.cfg and saved_variables.cfg.
+# First prints a line with current set PA, then prints 21 additional line segments starting with PA_START, and increasing to PA_STOP.
+# Based on http://realdeuce.github.io/Voron/PA/pressure_advance.html
+# Cleaned up and moved to using saved_variables.cfg by u/jibbsisme
+# Sourced from u/Deepsiks, assisted by u/imoftendisgruntled, u/scul86, and thanks to u/beansisfat, u/stray_r
+
+
+description: Tune Pressure Advance
+gcode:
+  # saved_variables.cfg
+  {% set speed = printer.save_variables.variables.speed %}
+  {% set hotendtemp = printer.save_variables.variables.nozzle_temp %}
+  {% set bedtemp = printer.save_variables.variables.bed_temp %}
+
+  # macro parameters
+  {% set BED = params.BED|default(bed_temp)|float %}
+  {% set NOZZLE = params.NOZZLE|default(nozzle_temp)|float %}
+  {% set PA_START = params.PA_START|default(0.0)|float %}
+  {% set PA_STOP = params.PA_STOP|default(0.1)|float %}
+  {% set NZL = params.NZL|default(printer.configfile.config["extruder"]["nozzle_diameter"])|float %}
+
+  # calculated variables
+  {% set PA_STEP = (PA_STOP - PA_START) / 20 |float %}
+  {% set E20 = (0.1147475 * NZL) * 20|float %}
+  {% set E40 = (0.1147475 * NZL) * 40|float %}
+  {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
+  {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
+
+  START_PRINT BED_TEMP={BED} NOZZLE_TEMP={NOZZLE}
+
+  G21 ; millimeter units
+  G90 ; absolute XYZ
+  M83 ; relative E
+  SET_VELOCITY_LIMIT ACCEL=3000 ACCEL_TO_DECEL=1500
+  G92 E0
+  M106 S0
+
+  G1 X{(X_MID-40)} Y{(Y_MID-65)} F{speed}        ; move to start position
+  G1 Z0.25 F300                                  ; move to layer height
+  G1 E0.75 F1800                                 ; un-retract
+  G1 X{(X_MID-20)} Y{(Y_MID-65)} E{E20} F300     ; print line part one
+  G1 X{(X_MID+20)} Y{(Y_MID-65)} E{E40} F3000    ; print line part two
+  G1 X{(X_MID+40)} Y{(Y_MID-65)} E{E20} F300     ; print line part three
+  G1 E-0.75 F1800                                ; retract
+  G1 Z1 F300                                     ; move above layer height
+
+  {% for i in range(0, 21) %}
+      SET_PRESSURE_ADVANCE ADVANCE={PA_START + (i * PA_STEP)} ; set Pressure Advance
+      M117 PA={PA_START + (i * PA_STEP)}, STEP={PA_STEP}.
+      G1 X{(X_MID-40)} Y{(Y_MID-35)+(5*i)} F30000           ; move to start position
+      G1 Z0.25 F300                                         ; move to layer height
+      G1 E0.75 F1800                                        ; un-retract
+      G1 X{(X_MID-20)} Y{(Y_MID-35)+(5*i)} E{E20} F300      ; print line part one
+      G1 X{(X_MID+20)} Y{(Y_MID-35)+(5*i)} E{E40} F3000     ; print line part two
+      G1 X{(X_MID+40)} Y{(Y_MID-35)+(5*i)} E{E20} F300      ; print line part three
+      G1 E-0.75 F1800                                       ; retract
+      G1 Z1 F300                                            ; move above layer height
+  {% endfor %}
+
+  END_PRINT
+
+  # these may not work, in which case you will need to count and do the math yourself!
+  M117 New PA = ({PA_START} + (bestLine * {PA_STEP}) )
+  {action_respond_info ("Find best line and multiply it by (" + PA_START|string + " + (bestLine * " + PA_STEP|string + ") ) to find your PA setting.")}
+
+[save_variables]
+filename: ~/klipper_config/saved_variables.cfg
+
+#*# <---------------------- SAVE_CONFIG ---------------------->
+#*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
+#*#
+#*# [extruder]
+#*# control = pid
+#*# pid_kp = 21.193
+#*# pid_ki = 1.002
+#*# pid_kd = 112.056
+#*#
+#*# [stepper_z]
+#*# position_endstop = 0.020
+#*#
+#*# [bed_mesh wiggly1]
+#*# version = 1
+#*# points =
+#*# 	-0.000000, -0.005000, 0.050000, 0.005000
+#*# 	-0.080000, -0.095000, -0.100000, -0.100000
+#*# 	-0.040000, -0.105000, -0.130000, -0.145000
+#*# 	0.142500, 0.020000, 0.025000, 0.035000
+#*# tension = 0.2
+#*# min_x = 10.0
+#*# algo = lagrange
+#*# y_count = 4
+#*# mesh_y_pps = 2
+#*# min_y = 1.0
+#*# x_count = 4
+#*# max_y = 214.99
+#*# mesh_x_pps = 2
+#*# max_x = 224.97
+#*#
+#*# [bed_mesh WIGGLY2]
+#*# version = 1
+#*# points =
+#*# 	0.085000, 0.055000, 0.110000, 0.065000, 0.082500
+#*# 	-0.045000, -0.045000, -0.000000, -0.005000, 0.005000
+#*# 	-0.030000, -0.055000, -0.040000, -0.067500, -0.062500
+#*# 	0.042500, 0.012500, -0.000000, -0.025000, -0.037500
+#*# 	0.142500, 0.097500, 0.090000, 0.075000, 0.100000
+#*# tension = 0.2
+#*# min_x = 20.0
+#*# algo = lagrange
+#*# y_count = 5
+#*# mesh_y_pps = 2
+#*# min_y = 7.0
+#*# x_count = 5
+#*# max_y = 212.0
+#*# mesh_x_pps = 2
+#*# max_x = 225.0
+
